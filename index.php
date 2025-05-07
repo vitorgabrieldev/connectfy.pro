@@ -4,8 +4,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="assets/images/favicon.ico" type="image/x-icon">
     <title>Connectfy: Simplificando a Conexão de Serviços para Você</title>
+    <meta name="description" content="Connectfy é a sua plataforma para conectar-se com os melhores profissionais e encontrar serviços de forma fácil e rápida. Faça seu pré-cadastro e descubra um novo mundo de oportunidades.">
+    <meta name="keywords" content="conectividade, serviços, profissionais, encontrar serviços, contratar serviços, pré-cadastro">
     <link rel="stylesheet" href="assets/css/index.css">
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Connectfy: Simplificando a Conexão de Serviços para Você" />
+    <meta property="og:description" content="Connectfy é a sua plataforma para conectar-se com os melhores profissionais e encontrar serviços de forma fácil e rápida. Faça seu pré-cadastro e descubra um novo mundo de oportunidades." />
+    <meta property="og:url" content="https://connectfy.pro" /> <meta property="og:image" content="https://connectfy.pro/assets/images/opengraph.png" /> <meta property="og:image:alt" content="Logo e texto Connectfy: Simplificando a Conexão de Serviços" />
+    <meta property="og:locale" content="pt_BR" />
+    <meta property="og:site_name" content="Connectfy" />
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Connectfy",
+      "url": "https://connectfy.pro", "logo": "http://connectfy.pro/assets/images/favicon.ico", "description": "Connectfy é a sua plataforma para conectar-se com os melhores profissionais e encontrar serviços de forma fácil e rápida. Faça seu pré-cadastro e descubra um novo mundo de oportunidades.",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Londrina",
+        "addressRegion": "Paraná",
+        "streetAddress": "Rua Eduardo Aparecida Turetta - 225",
+        "addressCountry": "BR"
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer service",
+        "email": "mailto:vitorgabrieldeoliveiradev@gmail.com" },
+      "sameAs": [
+        "https://www.instagram.com/connectfyapp", ]
+    }
+    </script>
 </head>
 
 <body>
