@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /vendor/
+Disallow: /config/
+Disallow: /template/
+
+Sitemap: https://connectfy.pro/sitemap.xml 
