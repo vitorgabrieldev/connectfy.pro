@@ -323,4 +323,49 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
+
+    // Add event listeners for privacy policy and terms of use links
+    const privacyLinks = document.querySelectorAll('a[href="#"][class*="pre-register__link"]');
+    privacyLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const isPrivacy = this.textContent.includes('Privacidade');
+            
+            Swal.fire({
+                title: isPrivacy ? 'Política de Privacidade' : 'Termos de Uso',
+                html: `
+                    <div style="text-align: left; max-height: 400px; overflow-y: auto;">
+                        <p style="margin-bottom: 10px;">
+                            ${isPrivacy ? 
+                                'A Connectfy está comprometida em proteger sua privacidade. Coletamos apenas informações necessárias para fornecer nossos serviços e melhorar sua experiência.' :
+                                'Ao utilizar a Connectfy, você concorda com estes termos. Nossa plataforma conecta prestadores de serviços e clientes de forma segura e eficiente.'}
+                        </p>
+                        <p style="margin-bottom: 10px;">
+                            ${isPrivacy ?
+                                'Suas informações pessoais são tratadas com confidencialidade e segurança, seguindo as melhores práticas de proteção de dados.' :
+                                'Você é responsável por manter suas informações atualizadas e por todas as atividades realizadas em sua conta.'}
+                        </p>
+                        <p>
+                            ${isPrivacy ?
+                                'Para mais informações sobre como tratamos seus dados, entre em contato conosco.' :
+                                'Reservamo-nos o direito de modificar estes termos a qualquer momento, notificando os usuários sobre alterações significativas.'}
+                        </p>
+                    </div>
+                `,
+                width: '600px',
+                confirmButtonText: 'Entendi',
+                confirmButtonColor: '#405FF2',
+                background: '#fff',
+                customClass: {
+                    popup: 'animated fadeInDown'
+                },
+                showClass: {
+                    popup: 'animate__animated animate__fadeInDown'
+                },
+                hideClass: {
+                    popup: 'animate__animated animate__fadeOutUp'
+                }
+            });
+        });
+    });
 });
