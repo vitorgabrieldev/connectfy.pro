@@ -6,18 +6,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="assets/images/favicon.ico" type="image/x-icon">
     <title>Connectfy: Simplificando a Conexão de Serviços para Você</title>
-    <meta name="description" content="Connectfy é a sua plataforma para conectar-se com os melhores profissionais e encontrar serviços de forma fácil e rápida. Faça seu pré-cadastro e descubra um novo mundo de oportunidades.">
-    <meta name="keywords" content="conectividade, serviços, profissionais, encontrar serviços, contratar serviços, pré-cadastro">
+    <meta name="description"
+        content="Connectfy é a sua plataforma para conectar-se com os melhores profissionais e encontrar serviços de forma fácil e rápida. Faça seu pré-cadastro e descubra um novo mundo de oportunidades.">
+    <meta name="keywords"
+        content="conectividade, serviços, profissionais, encontrar serviços, contratar serviços, pré-cadastro">
     <link rel="stylesheet" href="assets/css/index.css">
 
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Connectfy: Simplificando a Conexão de Serviços para Você" />
-    <meta property="og:description" content="Connectfy é a sua plataforma para conectar-se com os melhores profissionais e encontrar serviços de forma fácil e rápida. Faça seu pré-cadastro e descubra um novo mundo de oportunidades." />
-    <meta property="og:url" content="https://connectfy.pro" /> <meta property="og:image" content="https://connectfy.pro/assets/images/opengraph.png" /> <meta property="og:image:alt" content="Logo e texto Connectfy: Simplificando a Conexão de Serviços" />
+    <meta property="og:description"
+        content="Connectfy é a sua plataforma para conectar-se com os melhores profissionais e encontrar serviços de forma fácil e rápida. Faça seu pré-cadastro e descubra um novo mundo de oportunidades." />
+    <meta property="og:url" content="https://connectfy.pro" />
+    <meta property="og:image" content="https://connectfy.pro/assets/images/opengraph.png" />
+    <meta property="og:image:alt" content="Logo e texto Connectfy: Simplificando a Conexão de Serviços" />
     <meta property="og:locale" content="pt_BR" />
     <meta property="og:site_name" content="Connectfy" />
 
-    <script type="application/ld+json">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+    <!-- <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "Organization",
@@ -35,9 +43,9 @@
         "contactType": "customer service",
         "email": "mailto:vitorgabrieldeoliveiradev@gmail.com" },
       "sameAs": [
-        "https://www.instagram.com/connectfyapp", ]
+        "https://www.instagram.com/connectfy.pro", ]
     }
-    </script>
+    </script> -->
 </head>
 
 <body>
@@ -47,7 +55,8 @@
                 <img src="assets/images/Logo.svg" alt="Logo Connectfy" class="header__logo-img">
             </figure>
             <div class="header__social">
-                <a href="#" class="header__social-link">
+                <a href="https://www.instagram.com/connectfy.pro" target="_blank" rel="noopener noreferrer"
+                    class="header__social-link">
                     <svg class="header__social-icon" xmlns="http://www.w3.org/2000/svg" width="40" height="38"
                         viewBox="0 0 40 38" fill="none">
                         <rect x="0.5" y="0.5" width="39" height="37" rx="9.5" stroke="#F1F1F1" />
@@ -166,11 +175,13 @@
                         <label class="pre-register__label">Qual é o seu interesse?</label>
                         <div class="pre-register__options">
                             <button type="button" class="pre-register__option pre-register__option--active">
-                                <img src="assets/images/majesticons_megaphone.svg" alt="" class="pre-register__option-icon">
+                                <img src="assets/images/majesticons_megaphone.svg" alt=""
+                                    class="pre-register__option-icon">
                                 Quero anunciar meus serviços
                             </button>
                             <button type="button" class="pre-register__option">
-                                <img src="assets/images/lucide_search-gray.svg" alt="" class="pre-register__option-icon">
+                                <img src="assets/images/lucide_search-gray.svg" alt=""
+                                    class="pre-register__option-icon">
                                 Quero contratar um serviço
                             </button>
                         </div>
@@ -209,6 +220,7 @@
         </div>
     </footer>
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="assets/js/script.js"></script>
 </body>
 
