@@ -51,12 +51,23 @@
     <script async src="https://www.googletagmanager.com/gtag/js?id=AW-11349265836">
     </script>
     <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
 
-    gtag('config', 'AW-11349265836');
+        gtag('config', 'AW-11349265836');
     </script>
+
+
+    <!-- Event snippet for Visualização de página conversion page -->
+    <script>
+    gtag('event', 'conversion', {
+        'send_to': 'AW-11349265836/zdtgCPy7_MMaEKyb4KMq',
+        'value': 1.0,
+        'currency': 'BRL'
+    });
+    </script>
+
 </head>
 
 <body>
