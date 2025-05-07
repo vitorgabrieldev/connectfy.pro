@@ -660,4 +660,8 @@ body::-webkit-scrollbar-button {
     .footer .footer__container .footer__copyright {
         text-align: center;
     }
+
+    .header {
+        padding: 16px 20px;
+    }
 }
