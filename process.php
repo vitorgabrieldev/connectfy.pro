@@ -1,5 +1,6 @@
 <?php
 require_once 'config/database.php';
+require_once 'send_mail.php';
 header('Content-Type: application/json');
 
 // Function to sanitize input
@@ -42,6 +43,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $result = $stmt->execute([$email, $name, $interest]);
         
         if ($result) {
+            // Enviar e-mails de confirmação
+            $emailsSent = sendRegistrationEmails($email, $name, $interest);
+            
+            if (!$emailsSent) {
+                error_log('E-mails não foram enviados, mas o cadastro foi realizado com sucesso.');
+            }
+            
             echo json_encode(['status' => 'success', 'message' => 'Pré-cadastro realizado com sucesso!']);
         } else {
             $error = $stmt->errorInfo();

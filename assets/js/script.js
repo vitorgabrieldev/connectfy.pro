@@ -233,7 +233,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Check for Google user data in session only when returning from Google OAuth
     const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.has('code') || urlParams.has('error') || urlParams.has('google_auth')) {
+    if (urlParams.has('code') || urlParams.has('error') || urlParams.has('google_success')) {
         // Show loading state
         Swal.fire({
             title: 'Processando...',
@@ -257,18 +257,24 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
+        // Remove URL parameters after reading them
+        const newUrl = window.location.pathname;
+        window.history.replaceState({}, document.title, newUrl);
+
+        // Check session for Google user data
         $.ajax({
             url: 'check_google_session.php',
             type: 'GET',
             success: function(response) {
                 try {
                     const data = typeof response === 'string' ? JSON.parse(response) : response;
+                    console.log('Session check response:', data); // Debug log
                     
-                    if (data.hasGoogleUser) {
+                    if (data.status === 'success') {
                         Swal.fire({
                             icon: 'success',
                             title: 'Pré-cadastro realizado!',
-                            text: 'Você já está cadastrado. Acompanhe seu e-mail para mais informações.',
+                            text: data.message || 'Seu cadastro foi realizado com sucesso. Acompanhe seu e-mail para mais informações.',
                             confirmButtonText: 'Ótimo!',
                             confirmButtonColor: '#405FF2',
                             background: '#fff',
@@ -286,7 +292,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         Swal.fire({
                             icon: 'error',
                             title: 'Erro!',
-                            text: 'Não foi possível recuperar seus dados do Google. Por favor, tente novamente.',
+                            text: data.message || 'Não foi possível recuperar seus dados do Google. Por favor, tente novamente.',
                             confirmButtonText: 'OK',
                             confirmButtonColor: '#405FF2',
                             background: '#fff'
@@ -304,7 +310,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     });
                 }
             },
-            error: function() {
+            error: function(xhr, status, error) {
+                console.error('Ajax error:', {xhr, status, error}); // Debug log
                 Swal.fire({
                     icon: 'error',
                     title: 'Erro!',
