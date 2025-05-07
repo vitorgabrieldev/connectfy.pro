@@ -261,10 +261,6 @@ body::-webkit-scrollbar-button {
     line-height: auto;
 }
 
-.benefits .benefits__container .benefits__grid .benefit-card:hover {
-    transform: translateY(-8px) scale(1.03);
-}
-
 /* ================= ABOUT ================= */
 .about {
     position: relative;
@@ -512,6 +508,18 @@ body::-webkit-scrollbar-button {
 
 /* ================= MEDIA QUERIES ================= */
 
+@media screen and (min-width: 1200px) {
+    /* ================= HOVERS E INTERAÇÕES ================= */
+    .benefits .benefits__container .benefits__grid .benefit-card {
+        transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+    }
+
+    .benefits .benefits__container .benefits__grid .benefit-card:hover {
+        transform: translateY(-8px) scale(1.03);
+        box-shadow: 0 6px 24px rgba(64, 95, 242, 0.15);
+    }
+}
+
 /* Tablet hozirontal */
 @media screen and (min-width: 850px) and (max-width: 1200px) {
     .banner .banner__container .banner__content {
@@ -558,10 +566,16 @@ body::-webkit-scrollbar-button {
 @media screen and (max-width: 600px) {
     .banner {
         padding: 40px 20px;
+        background-position: 30% 0;
     }
 
     .banner .banner__container .banner__content .banner__title {
-        font-size: 30px;
+        font-size: 26px;
+        font-weight: 500;
+    }
+
+    .banner .banner__container .banner__content .banner__title .banner__title--highlight {
+        font-weight: 600;
     }
 
     .cta {
@@ -640,16 +654,10 @@ body::-webkit-scrollbar-button {
 
     .pre-register .pre-register__container .pre-register__form .pre-register__group .pre-register__input {
         padding: 10px 16px;
+        height: 48px;
     }
-}
 
-
-/* ================= HOVERS E INTERAÇÕES ================= */
-.benefits .benefits__container .benefits__grid .benefit-card {
-    transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
-}
-
-.benefits .benefits__container .benefits__grid .benefit-card:hover {
-    transform: translateY(-8px) scale(1.03);
-    box-shadow: 0 6px 24px rgba(64, 95, 242, 0.15);
+    .footer .footer__container .footer__copyright {
+        text-align: center;
+    }
 }

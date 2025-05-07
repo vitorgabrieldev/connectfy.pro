@@ -44,7 +44,7 @@
     <header class="header">
         <div class="header__container">
             <figure class="header__logo">
-                <img src="assets/images/Logo-white.png" alt="Logo Connectfy" class="header__logo-img">
+                <img src="assets/images/logo.svg" alt="Logo Connectfy" class="header__logo-img">
             </figure>
             <div class="header__social">
                 <a href="#" class="header__social-link">
