@@ -30,6 +30,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Interest selection functionality with icon switching
     const interestOptions = document.querySelectorAll('.pre-register__option');
+    const googleBtn = document.querySelector('.pre-register__google');
     
     // Icon paths configuration
     const iconConfig = {
@@ -54,6 +55,14 @@ document.addEventListener('DOMContentLoaded', function() {
             : (isMegaphone ? iconConfig.megaphone.inactive : iconConfig.search.inactive);
     }
     
+    // Function to update Google button state
+    function updateGoogleButtonState() {
+        const hasSelectedInterest = document.querySelector('.pre-register__option--active') !== null;
+        googleBtn.disabled = !hasSelectedInterest;
+        googleBtn.style.opacity = hasSelectedInterest ? '1' : '0.5';
+        googleBtn.style.cursor = hasSelectedInterest ? 'pointer' : 'not-allowed';
+    }
+    
     interestOptions.forEach(option => {
         option.addEventListener('click', function() {
             // Update all options
@@ -62,12 +71,17 @@ document.addEventListener('DOMContentLoaded', function() {
                 opt.classList.toggle('pre-register__option--active', isActive);
                 updateIcon(opt, isActive);
             });
+            
+            // Update Google button state
+            updateGoogleButtonState();
         });
     });
 
+    // Initial Google button state
+    updateGoogleButtonState();
+
     // Form handling
     const form = document.querySelector('.pre-register__form');
-    const googleBtn = document.querySelector('.pre-register__google');
 
     if (form) {
         form.addEventListener('submit', function(e) {
@@ -95,7 +109,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 contentType: false,
                 success: function(response) {
                     try {
-                        // Se a resposta já for um objeto, use diretamente
                         const data = typeof response === 'string' ? JSON.parse(response) : response;
                         
                         if (data.status === 'success') {
@@ -143,8 +156,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         });
                     }
                 },
-                error: function(xhr, status, error) {
-                    console.error('Erro na requisição:', error);
+                error: function() {
                     Swal.fire({
                         icon: 'error',
                         title: 'Erro!',
@@ -165,30 +177,142 @@ document.addEventListener('DOMContentLoaded', function() {
     if (googleBtn) {
         googleBtn.addEventListener('click', function(e) {
             e.preventDefault();
-            const clientId = '<?php echo $_ENV["GOOGLE_CLIENT_ID"]; ?>';
-            const redirectUri = '<?php echo $_ENV["GOOGLE_REDIRECT_URI"]; ?>';
-            const scope = 'email profile';
             
-            const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code&scope=${scope}`;
-            window.location.href = authUrl;
+            const activeOption = document.querySelector('.pre-register__option--active');
+            if (!activeOption) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Atenção!',
+                    text: 'Por favor, selecione se você é prestador ou contratante antes de continuar.',
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#405FF2',
+                    background: '#fff'
+                });
+                return;
+            }
+
+            // Get Google configuration
+            $.ajax({
+                url: 'config/google_config.php',
+                type: 'GET',
+                success: function(config) {
+                    // Save selected interest in session
+                    const interest = activeOption.textContent.includes('anunciar') ? 'provider' : 'client';
+                    $.ajax({
+                        url: 'save_interest.php',
+                        type: 'POST',
+                        data: { interest: interest },
+                        success: function() {
+                            const scope = 'email profile';
+                            const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${config.clientId}&redirect_uri=${config.redirectUri}&response_type=code&scope=${scope}`;
+                            window.location.href = authUrl;
+                        },
+                        error: function() {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Erro!',
+                                text: 'Não foi possível salvar sua preferência. Tente novamente.',
+                                confirmButtonText: 'OK',
+                                confirmButtonColor: '#405FF2'
+                            });
+                        }
+                    });
+                },
+                error: function() {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Erro!',
+                        text: 'Não foi possível iniciar o login com Google. Tente novamente.',
+                        confirmButtonText: 'OK',
+                        confirmButtonColor: '#405FF2'
+                    });
+                }
+            });
         });
     }
 
     // Check for Google user data in session only when returning from Google OAuth
     const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.has('code') || urlParams.has('error')) {
+    if (urlParams.has('code') || urlParams.has('error') || urlParams.has('google_auth')) {
+        // Show loading state
+        Swal.fire({
+            title: 'Processando...',
+            text: 'Estamos realizando seu pré-cadastro',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+
+        // Check if there was an error
+        if (urlParams.has('error')) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Erro!',
+                text: 'Não foi possível fazer login com o Google. Tente novamente.',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#405FF2',
+                background: '#fff'
+            });
+            return;
+        }
+
         $.ajax({
             url: 'check_google_session.php',
             type: 'GET',
             success: function(response) {
-                const data = JSON.parse(response);
-                if (data.hasGoogleUser) {
-                    const form = document.querySelector('.pre-register__form');
-                    if (form) {
-                        form.querySelector('#email').value = data.email;
-                        form.querySelector('#nome').value = data.name;
+                try {
+                    const data = typeof response === 'string' ? JSON.parse(response) : response;
+                    
+                    if (data.hasGoogleUser) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Pré-cadastro realizado!',
+                            text: 'Você já está cadastrado. Acompanhe seu e-mail para mais informações.',
+                            confirmButtonText: 'Ótimo!',
+                            confirmButtonColor: '#405FF2',
+                            background: '#fff',
+                            customClass: {
+                                popup: 'animated fadeInDown'
+                            },
+                            showClass: {
+                                popup: 'animate__animated animate__fadeInDown'
+                            },
+                            hideClass: {
+                                popup: 'animate__animated animate__fadeOutUp'
+                            }
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Erro!',
+                            text: 'Não foi possível recuperar seus dados do Google. Por favor, tente novamente.',
+                            confirmButtonText: 'OK',
+                            confirmButtonColor: '#405FF2',
+                            background: '#fff'
+                        });
                     }
+                } catch (error) {
+                    console.error('Erro ao processar resposta:', error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Erro!',
+                        text: 'Ocorreu um erro ao processar os dados do Google.',
+                        confirmButtonText: 'OK',
+                        confirmButtonColor: '#405FF2',
+                        background: '#fff'
+                    });
                 }
+            },
+            error: function() {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Erro!',
+                    text: 'Não foi possível conectar ao servidor. Por favor, tente novamente.',
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#405FF2',
+                    background: '#fff'
+                });
             }
         });
     }

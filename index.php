@@ -197,12 +197,12 @@
                         <input type="text" id="nome" name="nome" class="pre-register__input"
                             placeholder="Digite aqui seu nome completo">
                     </div>
+                    <button type="submit" class="pre-register__submit">Realizar pré-cadastro</button>
                     <div class="pre-register__or">Ou</div>
                     <button type="button" class="pre-register__google">
                         <img src="assets/images/google.svg" alt="Google" class="pre-register__google-icon">
                         Continuar com o Google
                     </button>
-                    <button type="submit" class="pre-register__submit">Realizar pré-cadastro</button>
                     <p class="pre-register__terms">
                         Li e concordo com os <a href="#" class="pre-register__link">Termos de uso</a> e a <a href="#"
                             class="pre-register__link">Política de Privacidade</a>.

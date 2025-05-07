@@ -10,16 +10,22 @@ function sanitize($data) {
 // Handle form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
-        $db = Database::getInstance()->getConnection();
+        // Log the received data
+        error_log("Received POST data: " . print_r($_POST, true));
+
+        $db = Database::getInstance();
+        $conn = $db->getConnection();
         
         // Get and sanitize form data
         $email = sanitize($_POST['email']);
         $name = isset($_POST['nome']) ? sanitize($_POST['nome']) : null;
         $interest = sanitize($_POST['interest']); // 'provider' or 'client'
-        $google_id = isset($_POST['google_id']) ? sanitize($_POST['google_id']) : null;
+        
+        // Log sanitized data
+        error_log("Sanitized data - Email: $email, Name: $name, Interest: $interest");
         
         // Check if email already exists
-        $stmt = $db->prepare("SELECT id FROM users WHERE email = ?");
+        $stmt = $conn->prepare("SELECT id FROM users WHERE email = ?");
         $stmt->execute([$email]);
         
         if ($stmt->rowCount() > 0) {
@@ -28,16 +34,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         
         // Insert new user
-        $stmt = $db->prepare("
-            INSERT INTO users (email, name, interest_type, google_id, created_at) 
-            VALUES (?, ?, ?, ?, NOW())
+        $stmt = $conn->prepare("
+            INSERT INTO users (email, name, interest, created_at) 
+            VALUES (?, ?, ?, NOW())
         ");
         
-        $stmt->execute([$email, $name, $interest, $google_id]);
+        $result = $stmt->execute([$email, $name, $interest]);
         
-        echo json_encode(['status' => 'success', 'message' => 'Pré-cadastro realizado com sucesso!']);
+        if ($result) {
+            echo json_encode(['status' => 'success', 'message' => 'Pré-cadastro realizado com sucesso!']);
+        } else {
+            $error = $stmt->errorInfo();
+            error_log("Database error: " . print_r($error, true));
+            throw new PDOException("Erro ao inserir no banco de dados: " . $error[2]);
+        }
         
     } catch (PDOException $e) {
-        echo json_encode(['status' => 'error', 'message' => 'Erro ao processar o cadastro.']);
+        error_log("PDO Error: " . $e->getMessage());
+        error_log("Error trace: " . $e->getTraceAsString());
+        echo json_encode([
+            'status' => 'error', 
+            'message' => 'Erro ao processar o cadastro.',
+            'debug' => $e->getMessage()
+        ]);
+    } catch (Exception $e) {
+        error_log("General Error: " . $e->getMessage());
+        error_log("Error trace: " . $e->getTraceAsString());
+        echo json_encode([
+            'status' => 'error', 
+            'message' => 'Erro ao processar o cadastro.',
+            'debug' => $e->getMessage()
+        ]);
     }
 } 
